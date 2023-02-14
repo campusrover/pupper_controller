@@ -1,0 +1,4 @@
+<launch>
+    <node name="pupper_controller" pkg="pupper_controller" type="pupper.py" />
+    <node name="pupper_teleop" pkg="pupper_controller" type="pupper_teleop_key.py" />
+</launch>
