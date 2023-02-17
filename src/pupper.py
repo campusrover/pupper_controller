@@ -22,19 +22,10 @@ MESSAGE_RATE = 20
 
 def numpy_to_foot_positions(arr: np.ndarray):
     fp = PupperFootPositions()
-    fp.foot_0.x = arr[0, 0]
-    fp.foot_0.y = arr[1, 0]
-    fp.foot_0.z = arr[2, 0]
-    fp.foot_1.x = arr[0, 1]
-    fp.foot_1.y = arr[1, 1]
-    fp.foot_1.z = arr[2, 1]
-    fp.foot_2.x = arr[0, 2]
-    fp.foot_2.y = arr[1, 2]
-    fp.foot_2.z = arr[2, 2]
-    fp.foot_3.x = arr[0, 3]
-    fp.foot_3.y = arr[1, 3]
-    fp.foot_3.z = arr[2, 3]
-    
+    for i in range(4):
+        fp.foot_positions[i].x = arr[0, i]
+        fp.foot_positions[i].y = arr[1, i]
+        fp.foot_positions[i].z = arr[2, i]
     return fp
 
 
@@ -73,7 +64,9 @@ class DJIPupper:
 
         self.prev_state = BehaviorState.REST
 
-
+    """
+    COMMENT
+    """
     def twist_cb(self, msg):
         self.lin_x = msg.linear.x
         self.lin_y = msg.linear.y
@@ -88,6 +81,9 @@ class DJIPupper:
         self.reset_position = msg.data
 
 
+    """
+    COMMENT
+    """
     def summarize_config(self):
         print("Summary of gait parameters:")
         print("overlap time: ", self.config.overlap_time)
@@ -97,6 +93,9 @@ class DJIPupper:
         print("x shift: ", self.config.x_shift)
 
 
+    """
+    COMMENT
+    """
     def get_command(self, do_print=False):
         
         
@@ -120,9 +119,6 @@ class DJIPupper:
             command.trot_event = True
         else:
             command.walk_event = True
-
-
-
 
 
         self.prev_trot_toggle = command.trot_event
@@ -151,6 +147,9 @@ class DJIPupper:
 
         return command
 
+    """
+    COMMENT
+    """
     def run(self):
         command = self.get_command()
         if self.reset_position:
