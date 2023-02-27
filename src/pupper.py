@@ -30,6 +30,15 @@ def numpy_to_foot_positions(arr: np.ndarray):
 
 
 
+'''
+DJIPupper is a class which interfaces with the Stanford Pupper through ROS.
+
+This class contains a ROS subscriber which listens for Twist messages containing linear
+and angular x,y,z velocities. 
+
+The class then converts the velocities into foot positions to
+send to the robot through ROS in the form of the PupperFootPositions ROS message
+'''
 class DJIPupper:
 
     def __init__(self):
@@ -59,13 +68,13 @@ class DJIPupper:
         self.max_horizontal_speed = np.sqrt(self.max_x_vel**2 + self.max_y_vel**2)
 
         self.twist_sub = rospy.Subscriber("cmd_vel", Twist, callback=self.twist_cb)
-        self.reset_sub = rospy.Subscriber("reset_position", Bool, callback=self.reset_cb)
+        self.reset_sub = rospy.Subscriber("reset_position", Bool, callback=self.reset_cb) # Subscriber for info on reseting the pupper position
         self.foot_pos_pub = rospy.Publisher("foot_positions", PupperFootPositions, queue_size=1)
 
         self.prev_state = BehaviorState.REST
 
     """
-    COMMENT
+    Sets instance variables to values in Twist msg
     """
     def twist_cb(self, msg):
         self.lin_x = msg.linear.x
@@ -82,7 +91,7 @@ class DJIPupper:
 
 
     """
-    COMMENT
+    Prints a summary of the DJI Pupper config file
     """
     def summarize_config(self):
         print("Summary of gait parameters:")
@@ -94,7 +103,13 @@ class DJIPupper:
 
 
     """
-    COMMENT
+    Converts the angular and linear velocities provided by the Twist msg into a
+    Command object. This Command object contains
+
+    @Returns
+    Command: A Command object containing the data necessary to calculate the new foot
+    positions of the pupper
+
     """
     def get_command(self, do_print=False):
         
@@ -148,7 +163,8 @@ class DJIPupper:
         return command
 
     """
-    COMMENT
+    Uses the most recently calculated Command to publish the new foot positions of the pupper
+    using a ROS publisher
     """
     def run(self):
         command = self.get_command()

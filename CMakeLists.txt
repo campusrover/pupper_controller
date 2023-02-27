@@ -53,6 +53,8 @@ add_message_files(
   FILES
   PupperJointAngles.msg
   PupperFootPositions.msg
+  Box.msg
+  Boxes.msg
 )
 
 ## Generate services in the 'srv' folder
