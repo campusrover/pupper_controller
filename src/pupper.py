@@ -9,7 +9,7 @@ from djipupper.Config import Configuration
 from djipupper.Kinematics import four_legs_inverse_kinematics
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
-from pupper_controller.msg import PupperFootPositions
+from pupper_msgs.msg import PupperFootPositions
 from src.Utilities import deadband, clipped_first_order_filter
 import argparse
 import rospy

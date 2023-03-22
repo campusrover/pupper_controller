@@ -3,7 +3,7 @@
 
 import rospy
 import numpy as np
-from pupper_controller.msg import Box, Boxes
+from pupper_msgs.msg import Box, Boxes
 from geometry_msgs.msg import Twist
 
 
